@@ -5,12 +5,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.blogspot.jpllosa.model.GreatestCommonFactor;
+import com.blogspot.jpllosa.service.MathFunService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -18,6 +27,12 @@ public class MathFunControllerTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
+	
+	@InjectMocks
+	private MathFunController controller;
+	
+	@Mock
+	private MathFunService service;
 	
 	@Test
 	public void getGcfTest() throws Exception {
@@ -29,4 +44,18 @@ public class MathFunControllerTest {
 			.andExpect(jsonPath("$.gcf", is(4)));
 	}
 
+	@Test
+	public void getGcfTestWithMockedService() throws Exception {
+		GreatestCommonFactor gcf = new GreatestCommonFactor();
+		gcf.setFirstNumber(12);
+		gcf.setSecondNumber(16);
+		gcf.setGcf(4);
+		
+		when(service.findGcf(12, 16)).thenReturn(gcf);
+		GreatestCommonFactor actual = controller.getGcf(12, 16);
+		
+		verify(service).findGcf(anyInt(), anyInt());
+		
+		assertEquals(4, actual.getGcf());
+	}
 }
