@@ -6,4 +6,6 @@ Demo project for:
 3. [Spring Boot Mockito Example](https://jpllosa.blogspot.com/2023/02/spring-boot-mockito-example.html)
 
 
-Check out [jpllosa.blogspot.com](https://jpllosa.blogspot.com/)
+Check out:
+ - [codesamples.net](https://codesamples.net/)
+ - [jpllosa.blogspot.com](https://jpllosa.blogspot.com/)
